@@ -30,38 +30,17 @@ const Navbar = () => {
   const editor = useEditor()
   const inputFileRef = React.useRef<HTMLInputElement>(null)
 
-  const parseGraphicJSON = () => {
+  const parseGraphicJSON = async () => {
     const currentScene = editor.scene.exportToJSON()
 
-    const updatedScenes = scenes.map((scn) => {
-      if (scn.id === currentScene.id) {
-        return {
-          id: currentScene.id,
-          layers: currentScene.layers,
-          name: currentScene.name,
-        }
-      }
-      return {
-        id: scn.id,
-        layers: scn.layers,
-        name: scn.name,
-      }
-    })
+    const image = (await editor.renderer.toDataURL(currentScene, {})) as string
+    const a = document.createElement("a")
+    a.href = image
+    a.download = "template.png"
+    a.click()
 
-    if (currentDesign) {
-      const graphicTemplate: IDesign = {
-        id: currentDesign.id,
-        type: "GRAPHIC",
-        name: currentDesign.name,
-        frame: currentDesign.frame,
-        scenes: updatedScenes,
-        metadata: {},
-        preview: "",
-      }
-      makeDownload(graphicTemplate)
-    } else {
-      console.log("NO CURRENT DESIGN")
-    }
+    a.download = "template.jpg"
+    a.click()
   }
 
   const parsePresentationJSON = () => {
@@ -134,7 +113,7 @@ const Navbar = () => {
     }
   }
 
-  const makeDownload = (data: Object) => {
+  const makeDownload = async (data: Object) => {
     const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(data))}`
     const a = document.createElement("a")
     a.href = dataStr
@@ -149,7 +128,7 @@ const Navbar = () => {
       } else if (editorType === "PRESENTATION") {
         return parsePresentationJSON()
       } else {
-      return parseVideoJSON()
+        return parseVideoJSON()
       }
     }
   }
@@ -319,7 +298,7 @@ const Navbar = () => {
             <Play size={24} />
           </Button>
 
-          <Button
+          {/* <Button
             size="compact"
             onClick={() => window.location.replace("https://github.com/layerhub-io/react-design-editor")}
             kind={KIND.tertiary}
@@ -334,7 +313,7 @@ const Navbar = () => {
             kind={KIND.primary}
           >
             Try PRO
-          </Button>
+          </Button> */}
         </Block>
       </Container>
     </ThemeProvider>
