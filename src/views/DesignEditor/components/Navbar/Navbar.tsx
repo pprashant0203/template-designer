@@ -41,6 +41,36 @@ const Navbar = () => {
 
     a.download = "template.jpg"
     a.click()
+
+    const updatedScenes = scenes.map((scn) => {
+      if (scn.id === currentScene.id) {
+        return {
+          id: currentScene.id,
+          layers: currentScene.layers,
+          name: currentScene.name,
+        }
+      }
+      return {
+        id: scn.id,
+        layers: scn.layers,
+        name: scn.name,
+      }
+    })
+
+    if (currentDesign) {
+      const graphicTemplate: IDesign = {
+        id: currentDesign.id,
+        type: "GRAPHIC",
+        name: currentDesign.name,
+        frame: currentDesign.frame,
+        scenes: updatedScenes,
+        metadata: {},
+        preview: "",
+      }
+      makeDownload(graphicTemplate)
+    } else {
+      console.log("NO CURRENT DESIGN")
+    }
   }
 
   const parsePresentationJSON = () => {
@@ -221,6 +251,7 @@ const Navbar = () => {
   }
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    debugger
     const file = e.target.files![0]
     if (file) {
       const reader = new FileReader()
