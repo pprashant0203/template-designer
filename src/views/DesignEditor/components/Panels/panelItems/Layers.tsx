@@ -158,6 +158,7 @@ const Layers = () => {
                 >
                   <Delete size={24} />
                 </Button>
+                <Button>AQ</Button>
               </Block>
             </Block>
           ))}
