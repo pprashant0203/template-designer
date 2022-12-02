@@ -11,10 +11,13 @@ import EyeCrossed from "~/components/Icons/EyeCrossed"
 import Delete from "~/components/Icons/Delete"
 import { Button, KIND, SIZE } from "baseui/button"
 import useSetIsSidebarOpen from "~/hooks/useSetIsSidebarOpen"
+import useModal from "~/hooks/useModal"
+import Modal from "./modal"
 
 const Layers = () => {
   const editor = useEditor()
   const objects = useObjects() as ILayer[]
+  const { isOpen, toggle } = useModal()
   const [layerObjects, setLayerObjects] = React.useState<any[]>([])
   const setIsSidebarOpen = useSetIsSidebarOpen()
 
@@ -158,7 +161,23 @@ const Layers = () => {
                 >
                   <Delete size={24} />
                 </Button>
-                <Button>AQ</Button>
+                <Button
+                  size={SIZE.mini}
+                  onClick={toggle}
+                  overrides={{
+                    Root: {
+                      style: {
+                        paddingLeft: "4px",
+                        paddingRight: "4px",
+                      },
+                    },
+                  }}
+                >
+                  AQ
+                </Button>
+                <Modal isOpen={isOpen} toggle={toggle}>
+                  <div>Yaay</div>
+                </Modal>
               </Block>
             </Block>
           ))}
